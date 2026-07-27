@@ -12,6 +12,18 @@
 </div>
 
 }
+
+@if (successMessage) {
+
+<div class="alert alert-success">
+
+    {{successMessage}}
+
+</div>
+
+}
+
+
 <div class="date-container">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
 

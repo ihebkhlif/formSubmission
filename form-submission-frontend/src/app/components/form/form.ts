@@ -39,6 +39,8 @@ export class Form {
 
   form!: FormGroup;
 
+  successMessage = '';
+
   constructor(
     private fb: FormBuilder,
     private submissionService: SubmissionService
@@ -67,6 +69,13 @@ export class Form {
         next: response => {
 
           console.log(response);
+
+          this.successMessage = "Leave request submitted successfully ✅";
+
+          this.form.reset();
+          this.form.markAsPristine();
+          this.form.markAsUntouched();
+
 
         },
 

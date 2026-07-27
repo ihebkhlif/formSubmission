@@ -19,7 +19,7 @@ public class SubmissionService {
         if (submission.getEndDate().isBefore(submission.getStartDate())) {
             throw new IllegalArgumentException("End date must be after start date.");
         }
-        submission.setStatus(LeaveStatus.PENDING);
+        submission.setStatus(LeaveStatus.Waiting_For_Approval);
         submission.setSubmittedAt(java.time.LocalDateTime.now());
         return submissionRepository.save(submission);
     }
