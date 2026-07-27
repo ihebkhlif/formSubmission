@@ -5,6 +5,4 @@ import com.fromsub.demo.model.Submission;
 
 public interface SubmissionRepository extends MongoRepository<Submission, String> {
 
-    Submission findByEmail(String email);
-    
 }

@@ -13,14 +13,13 @@ import com.fromsub.demo.service.SubmissionService;
 
 import jakarta.validation.Valid;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 
-
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/submissions")
 public class SubmissionController {
@@ -28,21 +27,17 @@ public class SubmissionController {
     @Autowired
     private SubmissionService submissionService;
 
-
     @PostMapping
-    public Submission createSubmission(@Valid @RequestBody Submission submission){
+    public Submission createSubmission(@Valid @RequestBody Submission submission) {
 
         return submissionService.saveSubmission(submission);
     }
 
     @GetMapping
-    public List<Submission> getAll( @RequestParam(required = false) String email) {
-        if (email != null) {
-            return List.of(submissionService.getSubmissionByEmail(email));
-        }
+    public List<Submission> getAll() {
         return submissionService.getAllSubmissions();
     }
-    
+
     @GetMapping("/{id}")
     public Submission getSubmission(@PathVariable String id) {
         return submissionService.getSubmissionById(id);
@@ -57,6 +52,5 @@ public class SubmissionController {
     public Submission updateSubmission(@PathVariable String id, @RequestBody Submission Submission) {
         return submissionService.updateSubmission(id, Submission);
     }
-
 
 }

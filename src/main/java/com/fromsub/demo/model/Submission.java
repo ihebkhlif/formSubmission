@@ -1,10 +1,14 @@
 package com.fromsub.demo.model;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Document(collection = "submissions")
 public class Submission {
@@ -12,58 +16,89 @@ public class Submission {
     @Id
     private String id;
 
-    @NotBlank(message = "First name is required")
-    private String firstName;
+    @NotBlank
+    private String employeeName;
 
-    @NotBlank(message = "Last name is required")
-    private String lastName;
+    @NotNull
+    private LocalDate startDate;
 
-    @Email(message = "Invalid email")
-    @NotBlank(message = "Email is required")
-    private String email;
+    @NotNull
+    private LocalDate endDate;
 
+    @NotBlank
+    private String leaveType;
+
+    private String reason;
+
+    private LeaveStatus status;
+
+    private LocalDateTime submittedAt;
 
     public Submission() {
     }
-
 
     public String getId() {
         return id;
     }
 
-
     public void setId(String id) {
         this.id = id;
     }
 
-
-    public String getFirstName() {
-        return firstName;
+    public String getEmployeeName() {
+        return employeeName;
     }
 
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
     }
 
-
-    public String getLastName() {
-        return lastName;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
-
-    public String getEmail() {
-        return email;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public String getLeaveType() {
+        return leaveType;
+    }
+
+    public void setLeaveType(String leaveType) {
+        this.leaveType = leaveType;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public LeaveStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(LeaveStatus status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getSubmittedAt() {
+        return submittedAt;
+    }
+
+    public void setSubmittedAt(LocalDateTime submittedAt) {
+        this.submittedAt = submittedAt;
     }
 
 }

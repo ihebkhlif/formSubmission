@@ -1,0 +1,26 @@
+<button (click)="drawer.toggle()" mat-icon-button>
+    <mat-icon>menu</mat-icon>
+</button>
+<mat-drawer-container autosize>
+    <mat-drawer #drawer opened="true" mode="side" position="start">
+        <mat-nav-list>
+            <mat-list-item>
+                <button routerLink="card" mat-button><mat-icon>dashboard</mat-icon> Dashboard</button>
+            </mat-list-item>
+            <mat-list-item>
+                <button routerLink="request-list" mat-button><mat-icon>Request List</mat-icon> Request List</button>
+            </mat-list-item>
+            <mat-list-item>
+                <button routerLink="add" mat-button><mat-icon>Add Leave Request</mat-icon> Add Leave Request</button>
+            </mat-list-item>
+
+        </mat-nav-list>
+    </mat-drawer>
+    <mat-drawer-content>
+        <div style="text-align: center;min-height: 600px;">
+
+            <router-outlet></router-outlet>
+
+        </div>
+    </mat-drawer-content>
+</mat-drawer-container>

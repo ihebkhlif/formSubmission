@@ -1,0 +1,60 @@
+<h2>Request a Leave</h2>
+
+@if (form.hasError('dateRangeInvalid')) {
+<div class="alert alert-danger">
+    ⚠️ End date must be after start date.
+</div>
+}
+
+@if (form.get('startDate')?.hasError('minDate')) {
+<div class="alert alert-danger">
+    ⚠️ Start date cannot be in the past.
+</div>
+
+}
+<div class="date-container">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <mat-form-field>
+            <mat-label>Employee name</mat-label>
+            <input matInput formControlName="employeeName">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>StartDate</mat-label>
+            <input matInput [matDatepicker]="dp3" readonly="true" formControlName="startDate">
+
+            <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
+            <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>EndDate</mat-label>
+            <input matInput [matDatepicker]="dp2" readonly="true" formControlName="endDate">
+
+            <mat-datepicker-toggle matIconSuffix [for]="dp2"></mat-datepicker-toggle>
+            <mat-datepicker #dp2 disabled="false"></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Leave Type</mat-label>
+            <mat-select formControlName="leaveType">
+                <mat-option value="Sick">Sick Leave</mat-option>
+                <mat-option value="Vacation">Vacation Leave</mat-option>
+                <mat-option value="Personal">Personal Leave</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Reason</mat-label>
+            <input matInput formControlName="reason">
+        </mat-form-field>
+
+
+        <div class="example-button-row">
+            <button matButton="outlined" type="submit">Submit</button>
+        </div>
+
+
+    </form>
+</div>
