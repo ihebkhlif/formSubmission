@@ -1,0 +1,32 @@
+
+
+    <mat-dialog-content class="diag">
+      <h2 mat-dialog-title>Change Status</h2>
+
+      You are about to change the status from
+
+      <strong>{{data.oldStatus}}</strong>
+
+      to
+
+      <strong>{{data.newStatus}}</strong>.
+
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+
+      <button mat-button (click)="dialogRef.close(false)">
+        Cancel
+      </button>
+
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="dialogRef.close(true)">
+
+        Confirm
+
+      </button>
+
+    </mat-dialog-actions>
+  

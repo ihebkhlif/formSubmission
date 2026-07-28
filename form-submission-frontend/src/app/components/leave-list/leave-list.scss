@@ -69,4 +69,102 @@
  .leave-table td,
  .leave-table th {
      padding-inline: 1rem;
+     
  }
+::ng-deep .status-select .mat-mdc-select-trigger {
+
+    padding: 8px 12px;
+
+    border-radius: 20px;
+
+}
+
+::ng-deep .approved-chip {
+    background-color: #4caf50 !important;
+    color: white !important;
+}
+
+
+::ng-deep .rejected-chip {
+    background-color: #f44336 !important;
+    color: white !important;
+}
+
+
+::ng-deep .waiting-chip {
+    background-color: #ffc107 !important;
+    color: black !important;
+}
+
+
+
+::ng-deep .approved .mat-mdc-select-trigger {
+    background-color: #4caf50;
+    color: black;
+}
+
+
+::ng-deep .rejected .mat-mdc-select-trigger {
+    background-color: #f44336;
+    color: black;
+}
+
+
+::ng-deep .waiting .mat-mdc-select-trigger {
+    background-color: #ffc107;
+    color: black;
+}
+
+
+.submitted-date {
+    font-size: 0.875rem;
+    white-space: nowrap;
+}
+
+section {
+  display: flex;
+  align-items: center;
+}
+
+.example-label {
+  font-size: 14px;
+  margin: 0 16px 0 8px;
+  min-width: 120px;
+}
+
+.reason-cell {
+display: flex   ;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  max-width: 400px;
+}
+
+.reason-preview {
+  flex: 1;
+  min-width: 0;          // required for ellipsis to work inside flex
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.reason-btn {
+  max-width: 100px;
+  max-height: 40px;
+}
+
+.mat-mdc-row {
+  border-bottom: 1px solid black; // match whatever color you're using now
+}
+
+.mat-mdc-cell {
+  border-bottom: none !important; // kill Material's default per-cell border
+}
+
+.filter-bar {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}

@@ -1,17 +1,30 @@
+
 <button (click)="drawer.toggle()" mat-icon-button>
     <mat-icon>menu</mat-icon>
 </button>
-<mat-drawer-container autosize>
-    <mat-drawer #drawer opened="true" mode="side" position="start">
+<mat-drawer-container autosize >
+    <mat-drawer #drawer opened="false" mode="side" position="start" class="sidebar">
+        
         <mat-nav-list>
-            <mat-list-item>
-                <button routerLink="request-list" mat-button><mat-icon>dashboard</mat-icon> Dashboard</button>
+            <mat-list-item routerLink="request-list">
+                <button mat-button disableRipple tabindex="-1" style="pointer-events: none;">
+                <mat-icon>dashboard</mat-icon>
+                Dashboard
+                </button>
             </mat-list-item>
-            <mat-list-item>
-                <button routerLink="request-list" mat-button><mat-icon>Request List</mat-icon> Request List</button>
+            <mat-list-item routerLink="request-list">
+                <button mat-button disableRipple tabindex="-1" style="pointer-events: none;">
+                <mat-icon>Request List</mat-icon>
+                Request List
+                </button>
             </mat-list-item>
-            <mat-list-item>
-                <button routerLink="add" mat-button><mat-icon>Add Leave Request</mat-icon> Add Leave Request</button>
+            <mat-list-item routerLink="add">
+                <button mat-button disableRipple tabindex="-1" style="pointer-events: none;">
+
+                <mat-icon>add</mat-icon>
+                Add Leave Request
+
+</button>
             </mat-list-item>
 
         </mat-nav-list>
