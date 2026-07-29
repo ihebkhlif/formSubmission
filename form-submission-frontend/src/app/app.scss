@@ -143,10 +143,11 @@
   .nav-label {
     font-weight: 600;
     font-size: 0.925rem;
+
   }
 
   &:hover {
-    background: #f1f5f9 !important;
+    background: rgba(99, 102, 241, 0.25) !important;
     color: var(--text-main) !important;
 
     .nav-icon {

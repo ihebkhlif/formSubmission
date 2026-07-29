@@ -93,7 +93,7 @@
           <mat-option value="">All Statuses</mat-option>
           <mat-option value="Waiting_For_Approval">Waiting For Approval</mat-option>
           <mat-option value="Approved">Approved</mat-option>
-          <mat-option value="Rejected">Rejected</mat-option>
+
         </mat-select>
       </mat-form-field>
     </div>
@@ -112,40 +112,38 @@
   <div class="calendar-grid-card">
     <div class="calendar-header-row">
       @for (wDay of weekDays; track wDay) {
-        <div class="weekday-header">{{ wDay }}</div>
+      <div class="weekday-header">{{ wDay }}</div>
       }
     </div>
 
     <div class="calendar-grid-body">
       @for (day of calendarDays; track day.dateString) {
-        <div class="calendar-day-cell"
-             [class.other-month]="!day.isCurrentMonth"
-             [class.today]="day.isToday">
-          <div class="day-number-badge">
-            <span class="day-num">{{ day.dayNumber }}</span>
-            @if (day.isToday) {
-              <span class="today-label">Today</span>
-            }
-          </div>
-
-          <div class="events-container">
-            @for (event of day.events; track event.submission.id) {
-              <div class="leave-event-rectangle"
-                   [ngClass]="[getTeamClass(event.workTeam), getStatusBadgeClass(event.status)]"
-                   (click)="openReasonDialog($event, event.submission)"
-                   [title]="event.employeeName + ' (' + event.workTeam + ') - ' + event.leaveType + ' - Status: ' + event.status">
-                <div class="event-top-row">
-                  <span class="event-owner">{{ event.employeeName }}</span>
-                  <span class="team-tag">{{ event.workTeam }}</span>
-                </div>
-                <div class="event-bottom-row">
-                  <span class="leave-type-pill">{{ event.leaveType }}</span>
-                  <span class="status-indicator-dot" [title]="event.status"></span>
-                </div>
-              </div>
-            }
-          </div>
+      <div class="calendar-day-cell" [class.other-month]="!day.isCurrentMonth" [class.today]="day.isToday">
+        <div class="day-number-badge">
+          <span class="day-num">{{ day.dayNumber }}</span>
+          @if (day.isToday) {
+          <span class="today-label">Today</span>
+          }
         </div>
+
+        <div class="events-container">
+          @for (event of day.events; track event.submission.id) {
+          <div class="leave-event-rectangle"
+            [ngClass]="[getTeamClass(event.workTeam), getStatusBadgeClass(event.status)]"
+            (click)="openReasonDialog($event, event.submission)"
+            [title]="event.employeeName + ' (' + event.workTeam + ') - ' + event.leaveType + ' - Status: ' + event.status">
+            <div class="event-top-row">
+              <span class="event-owner">{{ event.employeeName }}</span>
+              <span class="team-tag">{{ event.workTeam }}</span>
+            </div>
+            <div class="event-bottom-row">
+              <span class="leave-type-pill">{{ event.leaveType }}</span>
+              <span class="status-indicator-dot" [title]="event.status"></span>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
       }
     </div>
   </div>
