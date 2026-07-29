@@ -1,32 +1,46 @@
+<div class="confirm-dialog-wrap">
+  <div class="dialog-header" [class.danger-header]="data.isDanger">
+    <div class="dialog-icon-badge" [class.danger-badge]="data.isDanger">
+      <mat-icon>{{ data.isDanger ? 'delete_forever' : 'published_with_changes' }}</mat-icon>
+    </div>
+    <h3>{{ data.title || 'Change Request Status' }}</h3>
+  </div>
 
+  <mat-dialog-content class="dialog-body">
+    @if (data.message) {
+      <p class="dialog-description" [innerHTML]="data.message"></p>
+    } @else {
+      <p class="dialog-description">
+        Are you sure you want to update this leave request status?
+      </p>
 
-    <mat-dialog-content class="diag">
-      <h2 mat-dialog-title>Change Status</h2>
+      <div class="status-change-preview">
+        <div class="status-box">
+          <span class="status-label">FROM</span>
+          <strong class="status-val">{{ data.oldStatus }}</strong>
+        </div>
 
-      You are about to change the status from
+        <mat-icon class="arrow-icon">arrow_forward</mat-icon>
 
-      <strong>{{data.oldStatus}}</strong>
+        <div class="status-box highlight">
+          <span class="status-label">TO</span>
+          <strong class="status-val">{{ data.newStatus }}</strong>
+        </div>
+      </div>
+    }
+  </mat-dialog-content>
 
-      to
-
-      <strong>{{data.newStatus}}</strong>.
-
-    </mat-dialog-content>
-
-    <mat-dialog-actions align="end">
-
-      <button mat-button (click)="dialogRef.close(false)">
-        Cancel
-      </button>
-
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="dialogRef.close(true)">
-
-        Confirm
-
-      </button>
-
-    </mat-dialog-actions>
-  
+  <mat-dialog-actions align="end" class="dialog-actions">
+    <button mat-button class="cancel-btn" (click)="dialogRef.close(false)">
+      Cancel
+    </button>
+    <button
+      mat-flat-button
+      [color]="data.isDanger ? 'warn' : 'primary'"
+      class="confirm-btn"
+      [class.danger-btn]="data.isDanger"
+      (click)="dialogRef.close(true)">
+      {{ data.confirmLabel || 'Confirm' }}
+    </button>
+  </mat-dialog-actions>
+</div>

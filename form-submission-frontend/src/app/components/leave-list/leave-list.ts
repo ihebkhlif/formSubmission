@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatTableDataSource } from '@angular/material/table';
@@ -7,14 +7,17 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 
 import { Submission } from '../../models/submission';
+import { Employee } from '../../models/employee';
 import { SubmissionService } from '../../services/SubmissionService';
+import { EmployeeService } from '../../services/employee.service';
 import { ConfirmDialog } from '../confirm-dialog/confirm-dialog';
 import { MatDialog } from '@angular/material/dialog';
-import {MatChipsModule} from '@angular/material/chips';
-import { readBuilderProgram } from 'typescript';
+import { MatChipsModule } from '@angular/material/chips';
 import { ReasonDialog } from '../reason-dialog/reason-dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 export interface LeaveFilter {
@@ -35,15 +38,14 @@ export interface LeaveFilter {
     MatChipsModule,
     MatButtonModule,
     MatDatepickerModule,
+    MatIconModule,
+    RouterLink,
     FormsModule
 ],
   templateUrl: './leave-list.html',
   styleUrl: './leave-list.scss'
 })
-
-
 export class LeaveList implements OnInit {
-
 
   displayedColumns: string[] = [
     'employeeName',
@@ -55,8 +57,8 @@ export class LeaveList implements OnInit {
     'reason'
   ];
 
-
   dataSource = new MatTableDataSource<Submission>([]);
+  employeesMap: Map<string, Employee> = new Map();
 
   filter: LeaveFilter = {
     employeeName: '',
@@ -66,15 +68,21 @@ export class LeaveList implements OnInit {
 
   selectedDate: Date | null = null;
 
-
   constructor(
     private submissionService: SubmissionService,
+    private employeeService: EmployeeService,
     private dialog: MatDialog,
-    private ReasonDialog: MatDialog
+    private ReasonDialog: MatDialog,
+    private cdr: ChangeDetectorRef
   ) { }
 
-
   ngOnInit(): void {
+    this.employeeService.getAllEmployees().subscribe({
+      next: (employees) => {
+        employees.forEach(emp => this.employeesMap.set(emp.name.toLowerCase(), emp));
+        this.cdr.markForCheck();
+      }
+    });
 
     this.submissionService.getAllSubmissions()
       .subscribe({
@@ -84,6 +92,7 @@ export class LeaveList implements OnInit {
           console.log(data);
 
           this.dataSource.data = data;
+          this.cdr.markForCheck();
 
         },
 

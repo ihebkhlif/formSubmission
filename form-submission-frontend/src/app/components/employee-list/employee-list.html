@@ -1,0 +1,99 @@
+<div class="employee-list-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-title-area">
+      <span class="eyebrow">TEAM DIRECTORY</span>
+      <h2>Employee Directory</h2>
+      <p class="subtitle">View team members, assigned work groups, and annual leave credit usage.</p>
+    </div>
+    <div class="header-action-area">
+      <a mat-flat-button color="primary" routerLink="/add-employee" class="add-employee-btn">
+        <mat-icon>person_add</mat-icon>
+        Add Employee
+      </a>
+    </div>
+  </div>
+
+  <!-- Filter Card -->
+  <div class="filter-card">
+    <div class="filter-controls">
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Search Employee</mat-label>
+        <mat-icon matPrefix class="field-icon">search</mat-icon>
+        <input matInput placeholder="Type employee name..." [(ngModel)]="searchQuery" (ngModelChange)="applyFilters()">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Work Team</mat-label>
+        <mat-icon matPrefix class="field-icon">groups</mat-icon>
+        <mat-select [(ngModel)]="selectedTeam" (selectionChange)="applyFilters()">
+          <mat-option value="">All Teams</mat-option>
+          <mat-option value="DEV">DEV (Development)</mat-option>
+          <mat-option value="DEVOPS">DEVOPS (DevOps)</mat-option>
+          <mat-option value="TESTING">TESTING (Testing)</mat-option>
+          <mat-option value="MARKETING">MARKETING (Marketing)</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-stroked-button class="clear-btn" (click)="clearFilters()">
+        <mat-icon>refresh</mat-icon>
+        Clear
+      </button>
+    </div>
+  </div>
+
+  <!-- Employees Cards Grid -->
+  <div class="employee-grid">
+    @for (emp of filteredEmployees; track emp.id) {
+      <div class="employee-card">
+        <div class="card-header-row">
+          <div class="avatar-badge">
+            {{ emp.name ? emp.name.charAt(0).toUpperCase() : 'E' }}
+          </div>
+          <div class="employee-details">
+            <h3 class="emp-name">{{ emp.name }}</h3>
+            <span class="team-tag" [ngClass]="getTeamClass(emp.workTeam)">{{ emp.workTeam }}</span>
+          </div>
+          <button mat-icon-button class="delete-btn" (click)="confirmDelete(emp)" title="Delete employee">
+            <mat-icon>delete_outline</mat-icon>
+          </button>
+        </div>
+
+        <div class="credit-stats-grid">
+          <div class="stat-item">
+            <span class="stat-label">ANNUAL</span>
+            <span class="stat-value">{{ emp.annualCredit }} Days</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">USED</span>
+            <span class="stat-value text-muted">{{ emp.usedCredit || 0 }} Days</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">REMAINING</span>
+            <span class="stat-value highlight" [class.warning]="(emp.remainingCredit ?? 0) <= 5">
+              {{ emp.remainingCredit }} Days
+            </span>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill"
+               [style.width.%]="getCreditPercent(emp)"
+               [class.low-credit]="(emp.remainingCredit ?? 0) <= 5"></div>
+        </div>
+        <div class="progress-label">
+          <span>{{ getCreditPercent(emp) }}% allowance available</span>
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (filteredEmployees.length === 0) {
+    <div class="empty-state">
+      <mat-icon class="empty-icon">people_outline</mat-icon>
+      <h3>No Employees Found</h3>
+      <p>No team members matched your search or team filter.</p>
+    </div>
+  }
+</div>

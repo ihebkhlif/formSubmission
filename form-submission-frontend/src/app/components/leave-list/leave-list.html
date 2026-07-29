@@ -1,191 +1,168 @@
-<h2>Leave Requests</h2>
+<div class="leave-list-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-title-area">
+      <span class="eyebrow">DASHBOARD</span>
+      <h2>Leave Requests</h2>
+      <p class="subtitle">Review employee leave applications, filter by status or date, and update approvals.</p>
+    </div>
+    <div class="header-action-area">
+      <a mat-flat-button color="primary" routerLink="/add" class="create-request-btn">
+        <mat-icon class="btn-icon">add</mat-icon>
+        New Request
+      </a>
+    </div>
+  </div>
 
-<div class="filter-bar">
-  <mat-form-field appearance="outline">
-    <mat-label>Employee</mat-label>
-    <input matInput [(ngModel)]="filter.employeeName" (ngModelChange)="applyFilter()">
-  </mat-form-field>
+  <!-- Filter Bar Glass Card -->
+  <div class="filter-card">
+    <div class="filter-header">
+      <mat-icon class="filter-icon">filter_alt</mat-icon>
+      <span>Filter Records</span>
+    </div>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Status</mat-label>
-    <mat-select [(ngModel)]="filter.status" (selectionChange)="applyFilter()">
-      <mat-option value="">All</mat-option>
-      <mat-option value="Waiting_For_Approval">Waiting For Approval</mat-option>
-      <mat-option value="Approved">Approved</mat-option>
-      <mat-option value="Rejected">Rejected</mat-option>
-    </mat-select>
-  </mat-form-field>
+    <div class="filter-controls">
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Employee Name</mat-label>
+        <mat-icon matPrefix class="field-icon">search</mat-icon>
+        <input matInput placeholder="Search employee..." [(ngModel)]="filter.employeeName"
+          (ngModelChange)="applyFilter()">
+      </mat-form-field>
 
-  <mat-form-field appearance="outline">
-  <mat-label>Start date</mat-label>
-  <input matInput [matDatepicker]="picker" [value]="selectedDate" (dateChange)="onDateChange($event.value)">
-  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-  <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Status</mat-label>
+        <mat-icon matPrefix class="field-icon">rule</mat-icon>
+        <mat-select [(ngModel)]="filter.status" (selectionChange)="applyFilter()">
+          <mat-option value="">All Statuses</mat-option>
+          <mat-option value="Waiting_For_Approval">Waiting For Approval</mat-option>
+          <mat-option value="Approved">Approved</mat-option>
+          <mat-option value="Rejected">Rejected</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-  <button mat-stroked-button (click)="clearFilters()">Clear</button>
-</div>
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Start Date</mat-label>
+        <mat-icon matPrefix class="field-icon">calendar_today</mat-icon>
+        <input matInput [matDatepicker]="picker" [value]="selectedDate" (dateChange)="onDateChange($event.value)"
+          placeholder="Pick start date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
 
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <button mat-stroked-button class="clear-btn" (click)="clearFilters()">
+        <mat-icon>refresh</mat-icon>
+        Clear
+      </button>
+    </div>
+  </div>
 
-    <!-- Employee -->
+  <!-- Table Card Wrapper -->
+  <div class="table-card">
+    <div class="table-wrap">
+      <table mat-table [dataSource]="dataSource" class="leave-table">
 
-    <ng-container matColumnDef="employeeName">
+        <!-- Employee -->
+        <ng-container matColumnDef="employeeName">
+          <th mat-header-cell *matHeaderCellDef> Employee </th>
+          <td mat-cell *matCellDef="let element">
+            <div class="employee-cell">
+              <div class="user-avatar-badge">
+                {{ element.employeeName?.charAt(0).toUpperCase() }}
+              </div>
+              <span class="employee-name">{{ element.employeeName }}</span>
+            </div>
+          </td>
+        </ng-container>
 
-        <th mat-header-cell *matHeaderCellDef>
+        <!-- Leave Type -->
+        <ng-container matColumnDef="leaveType">
+          <th mat-header-cell *matHeaderCellDef> Leave Type </th>
+          <td mat-cell *matCellDef="let element">
+            <span class="leave-type-badge">{{ element.leaveType }}</span>
+          </td>
+        </ng-container>
 
-            Employee
+        <!-- Start -->
+        <ng-container matColumnDef="startDate">
+          <th mat-header-cell *matHeaderCellDef> Start Date </th>
+          <td mat-cell *matCellDef="let element" class="date-cell">
+            <mat-icon class="inline-date-icon">event</mat-icon>
+            {{ element.startDate }}
+          </td>
+        </ng-container>
 
-        </th>
+        <!-- End -->
+        <ng-container matColumnDef="endDate">
+          <th mat-header-cell *matHeaderCellDef> End Date </th>
+          <td mat-cell *matCellDef="let element" class="date-cell">
+            <mat-icon class="inline-date-icon">event_available</mat-icon>
+            {{ element.endDate }}
+          </td>
+        </ng-container>
 
-        <td mat-cell *matCellDef="let element">
-
-            {{element.employeeName}}
-
-        </td>
-
-    </ng-container>
-
-    <!-- Leave Type -->
-
-    <ng-container matColumnDef="leaveType">
-
-        <th mat-header-cell *matHeaderCellDef>
-
-            Leave Type
-
-        </th>
-
-        <td mat-cell *matCellDef="let element">
-
-            {{element.leaveType}}
-
-        </td>
-
-    </ng-container>
-
-    <!-- Start -->
-
-    <ng-container matColumnDef="startDate">
-
-        <th mat-header-cell *matHeaderCellDef>
-
-            Start
-
-        </th>
-
-        <td mat-cell *matCellDef="let element">
-
-            {{element.startDate}}
-
-        </td>
-
-    </ng-container>
-
-    <!-- End -->
-
-    <ng-container matColumnDef="endDate">
-
-        <th mat-header-cell *matHeaderCellDef>
-
-            End
-
-        </th>
-
-        <td mat-cell *matCellDef="let element">
-
-            {{element.endDate}}
-
-        </td>
-
-    </ng-container>
-
-    <!-- Status -->
-
-    <ng-container matColumnDef="status">
-
-        <th mat-header-cell *matHeaderCellDef>
-
-            Status
-
-        </th>
-
-        <td mat-cell *matCellDef="let element" class="status-select"> 
-
-            
-
-            <mat-select
-                [value]="element.status"
-                [ngClass]="getStatusClass(element.status)"
-                (selectionChange)="confirmStatusChange(element, $event.value)"
-                >
-
-                <mat-option value="Waiting_For_Approval">
-                    <mat-chip class="waiting-chip">
-                        Waiting For Approval
-                    </mat-chip>
-                </mat-option>
-
-                <mat-option value="Approved">
-                <mat-chip class="approved-chip">
-
-                    Approved
-
+        <!-- Status -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Status </th>
+          <td mat-cell *matCellDef="let element" class="status-select-cell">
+            <mat-select [value]="element.status" [ngClass]="getStatusClass(element.status)"
+              (selectionChange)="confirmStatusChange(element, $event.value)" class="status-select"
+              panelClass="status-select-panel">
+              <mat-option value="Waiting_For_Approval">
+                <mat-chip class="waiting-chip">
+                  Waiting For Approval
                 </mat-chip>
-                </mat-option>
+              </mat-option>
 
-                <mat-option value="Rejected">
-                    <mat-chip class="rejected-chip">
+              <mat-option value="Approved">
+                <mat-chip class="approved-chip">
+                  Approved
+                </mat-chip>
+              </mat-option>
 
-                    Rejected
-
-                    </mat-chip>
-                </mat-option>
-
+              <mat-option value="Rejected">
+                <mat-chip class="rejected-chip">
+                  Rejected
+                </mat-chip>
+              </mat-option>
             </mat-select>
+          </td>
+        </ng-container>
 
-        
+        <!-- Submitted -->
+        <ng-container matColumnDef="submittedAt">
+          <th mat-header-cell *matHeaderCellDef> Submitted </th>
+          <td mat-cell *matCellDef="let element" class="submitted-date">
+            {{ element.submittedAt | date:'medium' }}
+          </td>
+        </ng-container>
 
+        <!-- Reason -->
+        <ng-container matColumnDef="reason">
+          <th mat-header-cell *matHeaderCellDef class="mat-column-reason"> Reason </th>
+          <td mat-cell *matCellDef="let element">
+            <div class="reason-cell">
+              @if (element.reason != '' && element.reason.length > 20) {
+              <button mat-stroked-button color="primary" class="reason-btn" (click)="openDialog(element)">Open</button>
+              }
+              @else{
+              <span class="reason-preview">{{ element.reason || 'No reason provided' }}</span>
+              }
 
-        </td>
+            </div>
+          </td>
+        </ng-container>
 
-    </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+      </table>
 
-    <!-- Submitted -->
-
-    <ng-container matColumnDef="submittedAt">
-
-        <th mat-header-cell *matHeaderCellDef>
-
-            Submitted
-
-        </th>
-
-        <td mat-cell *matCellDef="let element" class="submitted-date">
-
-            {{element.submittedAt | date:'medium'}}
-
-        </td>
-
-    </ng-container>
-
-    <!-- Reason -->
-<ng-container matColumnDef="reason">
-    <th mat-header-cell *matHeaderCellDef class="mat-column-reason">
-        Reason
-    </th>
-    <td mat-cell *matCellDef="let element" class="reason-cell mat-column-reason">
-        <span class="reason-preview">{{element.reason}}</span>
-        @if (element.reason != '' && element.reason.length > 37) {
-        <button mat-stroked-button color="primary" class="reason-btn" (click)="openDialog(element)">Open</button>
-        }
-    </td>
-</ng-container>
-
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-</table>
-
+      @if (dataSource.data.length === 0) {
+      <div class="empty-state">
+        <mat-icon class="empty-icon">inbox</mat-icon>
+        <h3>No Leave Requests Found</h3>
+        <p>There are no leave requests matching your current filter criteria.</p>
+      </div>
+      }
+    </div>
+  </div>
+</div>

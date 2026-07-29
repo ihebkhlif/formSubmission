@@ -1,5 +1,121 @@
-.diag{
-    height: 150px;
-    width: 500px;
-    padding: 20px;
+.confirm-dialog-wrap {
+  padding: 24px;
+  max-width: 440px;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  .dialog-icon-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--primary-50);
+    color: var(--primary-600);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--primary-100);
+
+    mat-icon {
+      font-size: 22px;
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+}
+
+.dialog-body {
+  padding: 0 !important;
+  margin-bottom: 24px !important;
+}
+
+.dialog-description {
+  margin: 0 0 16px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.status-change-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-app);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  border: 1px solid var(--border-light);
+
+  .status-box {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    .status-label {
+      font-size: 0.685rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+    }
+
+    .status-val {
+      font-size: 0.875rem;
+      color: var(--text-main);
+    }
+
+    &.highlight .status-val {
+      color: var(--primary-600);
+      font-weight: 700;
+    }
+  }
+
+  .arrow-icon {
+    color: var(--text-muted);
+    font-size: 20px;
+  }
+}
+
+.dialog-actions {
+  padding: 0 !important;
+  display: flex;
+  gap: 10px;
+
+  .cancel-btn {
+    color: var(--text-muted) !important;
+    border-radius: var(--radius-md) !important;
+    font-weight: 600 !important;
+  }
+
+  .confirm-btn {
+    background: var(--primary-600) !important;
+    color: #ffffff !important;
+    border-radius: var(--radius-md) !important;
+    font-weight: 600 !important;
+    padding: 0 20px !important;
+
+    &.danger-btn {
+      background: #dc2626 !important;
+
+      &:hover {
+        background: #b91c1c !important;
+      }
+    }
+  }
+}
+
+/* Danger variant */
+.danger-badge {
+  background: #fee2e2 !important;
+  color: #dc2626 !important;
+  border-color: #fecaca !important;
 }

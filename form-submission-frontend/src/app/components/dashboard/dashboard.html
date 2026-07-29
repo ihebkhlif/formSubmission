@@ -1,0 +1,152 @@
+<div class="dashboard-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-title-area">
+      <span class="eyebrow">OVERVIEW & SCHEDULE</span>
+      <h2>Dashboard Calendar</h2>
+      <p class="subtitle">View company-wide leave coverage, work team availability, and upcoming time off.</p>
+    </div>
+    <div class="header-action-area">
+      <a mat-stroked-button routerLink="/add-employee" class="secondary-action-btn">
+        <mat-icon>person_add</mat-icon>
+        Add Employee
+      </a>
+      <a mat-flat-button color="primary" routerLink="/add" class="primary-action-btn">
+        <mat-icon>add</mat-icon>
+        New Request
+      </a>
+    </div>
+  </div>
+
+  <!-- KPI Metric Cards -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-icon-wrapper primary-icon">
+        <mat-icon>date_range</mat-icon>
+      </div>
+      <div class="kpi-info">
+        <span class="kpi-value">{{ totalActiveLeavesThisMonth }}</span>
+        <span class="kpi-label">Scheduled Days This Month</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon-wrapper warning-icon">
+        <mat-icon>pending_actions</mat-icon>
+      </div>
+      <div class="kpi-info">
+        <span class="kpi-value">{{ pendingApprovalsCount }}</span>
+        <span class="kpi-label">Pending Approvals</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-icon-wrapper success-icon">
+        <mat-icon>groups</mat-icon>
+      </div>
+      <div class="kpi-info">
+        <span class="kpi-value">{{ totalEmployeesCount }}</span>
+        <span class="kpi-label">Registered Team Members</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Calendar Control & Filter Glass Card -->
+  <div class="calendar-control-card">
+    <div class="month-navigation">
+      <button mat-icon-button (click)="prevMonth()" class="nav-arrow-btn" aria-label="Previous Month">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <button mat-stroked-button (click)="goToToday()" class="today-btn">Today</button>
+      <button mat-icon-button (click)="nextMonth()" class="nav-arrow-btn" aria-label="Next Month">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+      <h3 class="current-month-title">{{ monthLabel }}</h3>
+    </div>
+
+    <div class="filter-controls">
+      <!-- Search Employee -->
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Employee</mat-label>
+        <mat-icon matPrefix class="field-icon">search</mat-icon>
+        <input matInput placeholder="Search employee..." [(ngModel)]="searchQuery" (ngModelChange)="applyFilters()">
+      </mat-form-field>
+
+      <!-- Team Filter -->
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Work Team</mat-label>
+        <mat-icon matPrefix class="field-icon">groups</mat-icon>
+        <mat-select [(ngModel)]="selectedTeam" (selectionChange)="applyFilters()">
+          <mat-option value="">All Teams</mat-option>
+          <mat-option value="DEV">DEV (Development)</mat-option>
+          <mat-option value="DEVOPS">DEVOPS (DevOps)</mat-option>
+          <mat-option value="TESTING">TESTING (Testing)</mat-option>
+          <mat-option value="MARKETING">MARKETING (Marketing)</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Status Filter -->
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Status</mat-label>
+        <mat-icon matPrefix class="field-icon">rule</mat-icon>
+        <mat-select [(ngModel)]="selectedStatus" (selectionChange)="applyFilters()">
+          <mat-option value="">All Statuses</mat-option>
+          <mat-option value="Waiting_For_Approval">Waiting For Approval</mat-option>
+          <mat-option value="Approved">Approved</mat-option>
+          <mat-option value="Rejected">Rejected</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- Work Team Legend Bar -->
+  <div class="team-legend-bar">
+    <span class="legend-title">Team Color Codes:</span>
+    <div class="legend-item dev"><span class="color-dot"></span> DEV</div>
+    <div class="legend-item devops"><span class="color-dot"></span> DEVOPS</div>
+    <div class="legend-item testing"><span class="color-dot"></span> TESTING</div>
+    <div class="legend-item marketing"><span class="color-dot"></span> MARKETING</div>
+  </div>
+
+  <!-- Calendar Grid Container -->
+  <div class="calendar-grid-card">
+    <div class="calendar-header-row">
+      @for (wDay of weekDays; track wDay) {
+        <div class="weekday-header">{{ wDay }}</div>
+      }
+    </div>
+
+    <div class="calendar-grid-body">
+      @for (day of calendarDays; track day.dateString) {
+        <div class="calendar-day-cell"
+             [class.other-month]="!day.isCurrentMonth"
+             [class.today]="day.isToday">
+          <div class="day-number-badge">
+            <span class="day-num">{{ day.dayNumber }}</span>
+            @if (day.isToday) {
+              <span class="today-label">Today</span>
+            }
+          </div>
+
+          <div class="events-container">
+            @for (event of day.events; track event.submission.id) {
+              <div class="leave-event-rectangle"
+                   [ngClass]="[getTeamClass(event.workTeam), getStatusBadgeClass(event.status)]"
+                   (click)="openReasonDialog($event, event.submission)"
+                   [title]="event.employeeName + ' (' + event.workTeam + ') - ' + event.leaveType + ' - Status: ' + event.status">
+                <div class="event-top-row">
+                  <span class="event-owner">{{ event.employeeName }}</span>
+                  <span class="team-tag">{{ event.workTeam }}</span>
+                </div>
+                <div class="event-bottom-row">
+                  <span class="leave-type-pill">{{ event.leaveType }}</span>
+                  <span class="status-indicator-dot" [title]="event.status"></span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

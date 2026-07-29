@@ -2,15 +2,15 @@
   display: block;
 }
 
+// Re-use the same design tokens as the leave request form
 .form-container {
-  max-width: 720px;
+  max-width: 680px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
 
-/* Header */
 .page-header {
   display: flex;
   justify-content: space-between;
@@ -58,7 +58,6 @@ h2 {
   }
 }
 
-/* Card */
 .form-card {
   background: var(--surface-card);
   border-radius: var(--radius-lg);
@@ -75,23 +74,17 @@ h2 {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #6366f1, #10b981);
+  background: linear-gradient(90deg, #6366f1, #06b6d4);
 }
 
 .leave-form {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .full-width {
   width: 100%;
-}
-
-.form-grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
 }
 
 .field-icon {
@@ -100,73 +93,32 @@ h2 {
   margin-right: 8px;
 }
 
-.employee-credit-badge {
+// Team option inside select dropdown
+.team-option {
   display: flex;
   align-items: center;
-  gap: 20px;
-  background: var(--bg-app);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  padding: 12px 16px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
 
-  .badge-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+  .team-option-label {
+    font-weight: 600;
+    color: var(--text-main);
+  }
 
-    .badge-label {
-      font-size: 0.725rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      letter-spacing: 0.05em;
-    }
-
-    .badge-value {
-      font-weight: 700;
-      font-size: 0.875rem;
-      color: var(--text-main);
-
-      &.team-pill {
-        background: var(--primary-50);
-        color: var(--primary-700);
-        padding: 2px 8px;
-        border-radius: 12px;
-        font-size: 0.75rem;
-        border: 1px solid var(--primary-100);
-      }
-
-      &.highlight-credit {
-        color: var(--success-text);
-
-        &.warning {
-          color: var(--danger-text);
-        }
-      }
-    }
+  .team-option-tag {
+    font-size: 0.725rem;
+    font-weight: 700;
+    background: var(--primary-50);
+    color: var(--primary-700);
+    border: 1px solid var(--primary-100);
+    border-radius: 10px;
+    padding: 2px 8px;
   }
 }
 
-.days-summary-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--primary-50);
-  border: 1px solid var(--primary-100);
-  color: var(--primary-700);
-  padding: 10px 14px;
-  border-radius: var(--radius-md);
-  font-size: 0.875rem;
-  margin-bottom: 16px;
 
-  .info-icon {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
-    color: #3b82f6;
-  }
-}
+
+
 
 .form-actions {
   display: flex;
@@ -213,12 +165,7 @@ h2 {
 }
 
 @media (max-width: 640px) {
-  .form-grid-2 {
-    grid-template-columns: 1fr;
-    gap: 6px;
-  }
-
   .form-card {
-    padding: 24px 20px;
+    padding: 24px 16px;
   }
 }

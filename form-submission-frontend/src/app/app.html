@@ -1,39 +1,73 @@
-
-<button (click)="drawer.toggle()" mat-icon-button>
-    <mat-icon>menu</mat-icon>
-</button>
-<mat-drawer-container autosize >
-    <mat-drawer #drawer opened="false" mode="side" position="start" class="sidebar">
-        
-        <mat-nav-list>
-            <mat-list-item routerLink="request-list">
-                <button mat-button disableRipple tabindex="-1" style="pointer-events: none;">
-                <mat-icon>dashboard</mat-icon>
-                Dashboard
-                </button>
-            </mat-list-item>
-            <mat-list-item routerLink="request-list">
-                <button mat-button disableRipple tabindex="-1" style="pointer-events: none;">
-                <mat-icon>Request List</mat-icon>
-                Request List
-                </button>
-            </mat-list-item>
-            <mat-list-item routerLink="add">
-                <button mat-button disableRipple tabindex="-1" style="pointer-events: none;">
-
-                <mat-icon>add</mat-icon>
-                Add Leave Request
-
-</button>
-            </mat-list-item>
-
-        </mat-nav-list>
-    </mat-drawer>
-    <mat-drawer-content>
-        <div style="text-align: center;min-height: 600px;">
-
-            <router-outlet></router-outlet>
-
+<div class="app-layout">
+  <!-- Top Navigation Header -->
+  <header class="top-header">
+    <div class="header-left">
+      <button mat-icon-button (click)="drawer.toggle()" aria-label="Toggle navigation menu" class="menu-toggle-btn">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <div class="brand-logo">
+        <div class="brand-icon">
+          <!--change the img source to folder-->
+          <img src="/logo.png" alt="Platana Logo" class="brand-img">
         </div>
+        <span class="brand-name">Platana</span>
+        <span class="brand-badge">Portal</span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <div class="user-profile-badge">
+        <mat-icon>account_circle</mat-icon>
+        <span class="user-role">HR Portal</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Sidenav & Content Container -->
+  <mat-drawer-container class="drawer-container" autosize>
+    <mat-drawer #drawer mode="side" [opened]="true" class="app-sidebar">
+      <div class="sidebar-section-title">Navigation</div>
+
+      <mat-nav-list class="nav-list">
+        <a mat-list-item routerLink="dashboard" routerLinkActive="active-nav-item" class="nav-item">
+          <mat-icon matListItemIcon class="nav-icon">calendar_month</mat-icon>
+          <span matListItemTitle class="nav-label">Dashboard</span>
+        </a>
+
+        <a mat-list-item routerLink="employees" routerLinkActive="active-nav-item" class="nav-item">
+          <mat-icon matListItemIcon class="nav-icon">groups</mat-icon>
+          <span matListItemTitle class="nav-label">Employees</span>
+        </a>
+
+        <a mat-list-item routerLink="request-list" routerLinkActive="active-nav-item" class="nav-item">
+          <mat-icon matListItemIcon class="nav-icon">format_list_bulleted</mat-icon>
+          <span matListItemTitle class="nav-label">Leave Requests</span>
+        </a>
+
+        <a mat-list-item routerLink="add" routerLinkActive="active-nav-item" class="nav-item">
+          <mat-icon matListItemIcon class="nav-icon">add_circle_outline</mat-icon>
+          <span matListItemTitle class="nav-label">New Leave Request</span>
+        </a>
+
+        <a mat-list-item routerLink="add-employee" routerLinkActive="active-nav-item" class="nav-item">
+          <mat-icon matListItemIcon class="nav-icon">person_add</mat-icon>
+          <span matListItemTitle class="nav-label">Add Employee</span>
+        </a>
+      </mat-nav-list>
+
+      <div class="dark-mode-toggle-container">
+        <mat-icon class="toggle-icon">{{ isDarkMode ? 'dark_mode' : 'light_mode' }}</mat-icon>
+        <span class="toggle-label">Dark Mode</span>
+        <mat-slide-toggle [(ngModel)]="isDarkMode" (change)="toggleDarkMode($event.checked)" color="primary"></mat-slide-toggle>
+      </div>
+
+
+    </mat-drawer>
+
+    <mat-drawer-content class="main-content-area">
+      <div class="content-wrapper">
+        <router-outlet></router-outlet>
+      </div>
     </mat-drawer-content>
-</mat-drawer-container>
+  </mat-drawer-container>
+</div>

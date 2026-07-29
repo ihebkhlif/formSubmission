@@ -9,9 +9,11 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-confirm-dialog',
-  imports: [MatDialogContent, MatDialogActions, MatButtonModule],
+  imports: [CommonModule, MatDialogContent, MatDialogActions, MatButtonModule, MatIconModule],
   templateUrl: './confirm-dialog.html',
   styleUrl: './confirm-dialog.scss',
 })

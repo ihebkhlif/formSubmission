@@ -1,72 +1,152 @@
-<h2>Request a Leave</h2>
+<div class="form-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-title-area">
+      <span class="eyebrow">NEW SUBMISSION</span>
+      <h2>Request a Leave</h2>
+      <p class="subtitle">Select an employee and fill in the details below to submit your time off application.</p>
+    </div>
+    <a mat-stroked-button routerLink="/request-list" class="back-btn">
+      <mat-icon>arrow_back</mat-icon>
+      Back to Requests
+    </a>
+  </div>
 
-@if (form.hasError('dateRangeInvalid')) {
-<div class="alert alert-danger">
-    ⚠️ End date must be after start date.
-</div>
-}
+  <!-- Form Glass Card -->
+  <div class="form-card">
+    <div class="card-accent-bar"></div>
 
-@if (form.get('startDate')?.hasError('minDate')) {
-<div class="alert alert-danger">
-    ⚠️ Start date cannot be in the past.
-</div>
+    <!-- Alert Notifications -->
+    @if (form.hasError('dateRangeInvalid')) {
+      <div class="alert alert-danger">
+        <mat-icon>error_outline</mat-icon>
+        <span>End date must be set after the start date.</span>
+      </div>
+    }
 
-}
+    @if (form.get('startDate')?.hasError('minDate')) {
+      <div class="alert alert-danger">
+        <mat-icon>warning_amber</mat-icon>
+        <span>Start date cannot be set in the past.</span>
+      </div>
+    }
 
-@if (successMessage) {
+    @if (hasOverlap) {
+      <div class="alert alert-danger">
+        <mat-icon>event_busy</mat-icon>
+        <span>{{ overlapMessage }}</span>
+      </div>
+    }
 
-<div class="alert alert-success">
+    @if (creditLimitExceeded) {
+      <div class="alert alert-danger">
+        <mat-icon>report_problem</mat-icon>
+        <span>
+          <strong>Credit Limit Exceeded!</strong> Requested duration of <strong>{{ requestedDays }} day(s)</strong> exceeds {{ selectedEmployee?.name }}'s remaining annual credit of <strong>{{ selectedEmployee?.remainingCredit }} day(s)</strong>.
+        </span>
+      </div>
+    }
 
-    {{successMessage}}
+    @if (errorMessage) {
+      <div class="alert alert-danger">
+        <mat-icon>gpp_bad</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
 
-</div>
+    @if (successMessage) {
+      <div class="alert alert-success">
+        <mat-icon>check_circle_outline</mat-icon>
+        <span>{{ successMessage }}</span>
+      </div>
+    }
 
-}
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="leave-form">
+      
+      <!-- Employee Name Selection -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Select Employee</mat-label>
+        <mat-icon matPrefix class="field-icon">person</mat-icon>
+        <mat-select formControlName="employeeName" (selectionChange)="onEmployeeSelect($event.value)" placeholder="Choose employee...">
+          @for (emp of employees; track emp.id) {
+            <mat-option [value]="emp.name">
+              {{ emp.name }} ({{ emp.workTeam }}) — {{ emp.remainingCredit }} / {{ emp.annualCredit }} Days Left
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
 
-
-<div class="date-container">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-
-        <mat-form-field>
-            <mat-label>Employee name</mat-label>
-            <input matInput formControlName="employeeName">
-        </mat-form-field>
-
-        <mat-form-field>
-            <mat-label>StartDate</mat-label>
-            <input matInput [matDatepicker]="dp3" readonly="true" formControlName="startDate">
-
-            <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
-            <mat-datepicker #dp3 disabled="false"></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field>
-            <mat-label>EndDate</mat-label>
-            <input matInput [matDatepicker]="dp2" readonly="true" formControlName="endDate">
-
-            <mat-datepicker-toggle matIconSuffix [for]="dp2"></mat-datepicker-toggle>
-            <mat-datepicker #dp2 disabled="false"></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field>
-            <mat-label>Leave Type</mat-label>
-            <mat-select formControlName="leaveType">
-                <mat-option value="Sick">Sick Leave</mat-option>
-                <mat-option value="Vacation">Vacation Leave</mat-option>
-                <mat-option value="Personal">Personal Leave</mat-option>
-            </mat-select>
-        </mat-form-field>
-
-        <mat-form-field>
-            <mat-label>Reason</mat-label>
-            <input matInput formControlName="reason">
-        </mat-form-field>
-
-
-        <div class="example-button-row">
-            <button matButton="outlined" type="submit">Submit</button>
+      @if (selectedEmployee) {
+        <div class="employee-credit-badge">
+          <div class="badge-item">
+            <span class="badge-label">TEAM:</span>
+            <span class="badge-value team-pill">{{ selectedEmployee.workTeam }}</span>
+          </div>
+          <div class="badge-item">
+            <span class="badge-label">ANNUAL CREDIT:</span>
+            <span class="badge-value">{{ selectedEmployee.annualCredit }} Days</span>
+          </div>
+          <div class="badge-item">
+            <span class="badge-label">REMAINING CREDIT:</span>
+            <span class="badge-value highlight-credit" [class.warning]="(selectedEmployee.remainingCredit ?? 0) <= 5">
+              {{ selectedEmployee.remainingCredit }} Days
+            </span>
+          </div>
         </div>
+      }
 
+      <!-- Date Range (Grid 2 cols) -->
+      <div class="form-grid-2">
+        <mat-form-field appearance="outline">
+          <mat-label>Start Date</mat-label>
+          <mat-icon matPrefix class="field-icon">calendar_today</mat-icon>
+          <input matInput [matDatepicker]="dp3" readonly="true" formControlName="startDate" placeholder="Pick start date">
+          <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
+          <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+        </mat-form-field>
 
+        <mat-form-field appearance="outline">
+          <mat-label>End Date</mat-label>
+          <mat-icon matPrefix class="field-icon">event_available</mat-icon>
+          <input matInput [matDatepicker]="dp2" readonly="true" formControlName="endDate" placeholder="Pick end date">
+          <mat-datepicker-toggle matIconSuffix [for]="dp2"></mat-datepicker-toggle>
+          <mat-datepicker #dp2 disabled="false"></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      @if (requestedDays > 0) {
+        <div class="days-summary-info">
+          <mat-icon class="info-icon">info</mat-icon>
+          <span>Total Requested Leave Duration: <strong>{{ requestedDays }} day(s)</strong></span>
+        </div>
+      }
+
+      <!-- Leave Type -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Leave Type</mat-label>
+        <mat-icon matPrefix class="field-icon">category</mat-icon>
+        <mat-select formControlName="leaveType" placeholder="Select leave category">
+          <mat-option value="Sick">Sick Leave</mat-option>
+          <mat-option value="Vacation">Vacation Leave</mat-option>
+          <mat-option value="Personal">Personal Leave</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Reason -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Reason / Notes</mat-label>
+        <mat-icon matPrefix class="field-icon">notes</mat-icon>
+        <input matInput formControlName="reason" placeholder="Provide details regarding your request...">
+      </mat-form-field>
+
+      <!-- Submit Actions -->
+      <div class="form-actions">
+        <a mat-button routerLink="/request-list" class="cancel-btn">Cancel</a>
+        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || creditLimitExceeded || hasOverlap || isSubmitting" class="submit-btn">
+          <mat-icon>send</mat-icon>
+          Submit Request
+        </button>
+      </div>
     </form>
+  </div>
 </div>

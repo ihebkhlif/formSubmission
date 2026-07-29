@@ -1,0 +1,98 @@
+<div class="form-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-title-area">
+      <span class="eyebrow">TEAM MANAGEMENT</span>
+      <h2>Add New Employee</h2>
+      <p class="subtitle">Register a new team member with their work group and annual leave allocation.</p>
+    </div>
+    <a mat-stroked-button routerLink="/employees" class="back-btn">
+      <mat-icon>arrow_back</mat-icon>
+      Back to Employees
+    </a>
+  </div>
+
+  <!-- Form Glass Card -->
+  <div class="form-card">
+    <div class="card-accent-bar"></div>
+
+    <!-- Alert Notifications -->
+    @if (errorMessage) {
+    <div class="alert alert-danger">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ errorMessage }}</span>
+    </div>
+    }
+
+    @if (successMessage) {
+    <div class="alert alert-success">
+      <mat-icon>check_circle_outline</mat-icon>
+      <span>{{ successMessage }}</span>
+    </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="leave-form">
+
+      <!-- Employee Full Name -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Full Name</mat-label>
+        <mat-icon matPrefix class="field-icon">badge</mat-icon>
+        <input matInput formControlName="name" placeholder="e.g. John Smith">
+        @if (form.get('name')?.touched && form.get('name')?.hasError('required')) {
+        <mat-error>Full name is required.</mat-error>
+        }
+        @if (form.get('name')?.touched && form.get('name')?.hasError('minlength')) {
+        <mat-error>Name must be at least 2 characters.</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Work Team Selection -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Work Team</mat-label>
+        <mat-icon matPrefix class="field-icon">groups</mat-icon>
+        <mat-select formControlName="workTeam" placeholder="Select team...">
+          @for (team of workTeams; track team.value) {
+          <mat-option [value]="team.value">
+            <div class="team-option">
+              <span class="team-option-label">{{ team.label }}</span>
+              <span class="team-option-tag">{{ team.value }}</span>
+            </div>
+          </mat-option>
+          }
+        </mat-select>
+        @if (form.get('workTeam')?.touched && form.get('workTeam')?.hasError('required')) {
+        <mat-error>Work team is required.</mat-error>
+        }
+      </mat-form-field>
+
+      <!-- Annual Credit -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Annual Leave Credit (Days)</mat-label>
+        <mat-icon matPrefix class="field-icon">event_note</mat-icon>
+        <input matInput type="number" formControlName="annualCredit" placeholder="25">
+        <mat-hint>Default is 25 days per year</mat-hint>
+        @if (form.get('annualCredit')?.touched && form.get('annualCredit')?.hasError('required')) {
+        <mat-error>Annual credit is required.</mat-error>
+        }
+        @if (form.get('annualCredit')?.touched && form.get('annualCredit')?.hasError('min')) {
+        <mat-error>Must be at least 1 day.</mat-error>
+        }
+        @if (form.get('annualCredit')?.touched && form.get('annualCredit')?.hasError('max')) {
+        <mat-error>Cannot exceed 365 days.</mat-error>
+        }
+      </mat-form-field>
+
+
+
+      <!-- Submit Actions -->
+      <div class="form-actions">
+        <a mat-button routerLink="/employees" class="cancel-btn">Cancel</a>
+        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || isSubmitting"
+          class="submit-btn">
+          <mat-icon>person_add</mat-icon>
+          Add Employee
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

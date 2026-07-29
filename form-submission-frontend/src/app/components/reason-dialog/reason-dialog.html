@@ -1,7 +1,25 @@
-<mat-dialog-content class="mat-typography">
-  <h3>Reason</h3>
-  <p>{{data.reason}}</p>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button matButton mat-dialog-close>Cancel</button>
-</mat-dialog-actions>
+<div class="reason-dialog-wrap">
+  <div class="dialog-header">
+    <div class="dialog-icon-badge">
+      <mat-icon>notes</mat-icon>
+    </div>
+    <div class="dialog-title-group">
+      <h3>Leave Reason</h3>
+      @if (data.employeeName) {
+        <span class="employee-subtitle">Submitted by {{ data.employeeName }}</span>
+      }
+    </div>
+  </div>
+
+  <mat-dialog-content class="dialog-body">
+    <div class="reason-quote-box">
+      <p>{{ data.reason }}</p>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="dialog-actions">
+    <button mat-flat-button color="primary" mat-dialog-close class="close-btn">
+      Close
+    </button>
+  </mat-dialog-actions>
+</div>
