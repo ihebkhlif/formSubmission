@@ -57,7 +57,8 @@ h2 {
   gap: 6px;
 
   &:hover {
-    background: #f1f5f9 !important;
+    background: rgba(99, 102, 241, 0.25) !important;
+    color: var(--text-main) !important;
   }
 }
 
@@ -246,25 +247,37 @@ h2 {
     &.dev {
       background: #eeeffe;
       color: #3730a3;
-      .color-dot { background: #4f46e5; }
+
+      .color-dot {
+        background: #4f46e5;
+      }
     }
 
     &.devops {
       background: #ecfeff;
       color: #155e75;
-      .color-dot { background: #0891b2; }
+
+      .color-dot {
+        background: #0891b2;
+      }
     }
 
     &.testing {
       background: #f3e8ff;
       color: #5b21b6;
-      .color-dot { background: #7c3aed; }
+
+      .color-dot {
+        background: #7c3aed;
+      }
     }
 
     &.marketing {
       background: #fff7ed;
       color: #9a3412;
-      .color-dot { background: #d97706; }
+
+      .color-dot {
+        background: #d97706;
+      }
     }
   }
 }
